@@ -32,7 +32,770 @@ For Hardware:
 ### Implementation
 For Software:
 # Installation
-[commands]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClickFlow - Interactive Speed Challenge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            height: 100vh;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            background: #121212;
+        }
+
+        .page {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .page1 {
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: white;
+            position: relative;
+        }
+
+        .page1::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.04) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .page2 {
+            background: linear-gradient(135deg, #2c5364 0%, #203a43 50%, #0f2027 100%);
+            color: white;
+            position: relative;
+        }
+
+        .page2::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 70%, rgba(255,255,255,0.06) 0%, transparent 60%),
+                radial-gradient(circle at 70% 30%, rgba(255,255,255,0.04) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .final-page {
+            background: linear-gradient(135deg, #1d2b34 0%, #345161 100%);
+            color: white;
+            position: relative;
+        }
+
+        .final-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08) 0%, transparent 70%);
+            pointer-events: none;
+            animation: finalGlow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes finalGlow {
+            0% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        .content {
+            text-align: center;
+            z-index: 10;
+            max-width: 1200px;
+            padding: 60px;
+        }
+
+        .page-title {
+            font-size: 5.5rem;
+            font-weight: 800;
+            margin-bottom: 24px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            animation: titleFloat 4s ease-in-out infinite;
+            letter-spacing: -3px;
+            line-height: 0.9;
+        }
+
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .page-subtitle {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .page-description {
+            font-size: 1.4rem;
+            margin-bottom: 50px;
+            opacity: 0.85;
+            line-height: 1.7;
+            font-weight: 300;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin: 60px 0;
+            max-width: 1000px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: cardFloat 6s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: left 0.8s;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:nth-child(2) { animation-delay: 2s; }
+        .feature-card:nth-child(3) { animation-delay: 4s; }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            display: block;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+        }
+
+        .feature-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .feature-desc {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .click-hint {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            animation: pulseGlow 3s ease-in-out infinite;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px 50px;
+            border-radius: 60px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: inline-block;
+            margin-top: 40px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .click-hint::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+        }
+
+        .click-hint:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { 
+                transform: scale(1); 
+                box-shadow: 0 0 20px rgba(0, 123, 255, 0.2);
+            }
+            50% { 
+                transform: scale(1.02); 
+                box-shadow: 0 0 40px rgba(0, 123, 255, 0.3);
+            }
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px 35px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-width: 140px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .stat-emoji {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .stat-text {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .final-title {
+            font-family: 'Arial Black', 'Helvetica', sans-serif;
+            font-size: 6rem;
+            font-weight: 900;
+            margin-bottom: 30px;
+            text-shadow: 
+                2px 2px 0px rgba(0,0,0,0.5),
+                4px 4px 10px rgba(0,0,0,0.2);
+            animation: celebration 2s ease-in-out infinite;
+            color: white;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        @keyframes celebration {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .final-subtitle {
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .click-counter {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            font-size: 1.1rem;
+            opacity: 0.95;
+            background: rgba(0,0,0,0.2);
+            padding: 20px 30px;
+            border-radius: 50px;
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #007bff, #00aaff);
+            transition: width 0.1s ease;
+            border-radius: 2px;
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 10s ease-in-out infinite;
+            backdrop-filter: blur(5px);
+        }
+
+        .emoji-float {
+            font-size: 2.5rem;
+            animation: emojiFloat 12s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-40px) rotate(180deg); }
+        }
+
+        @keyframes emojiFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-50px) rotate(360deg); }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            animation: confetti-fall 4s linear infinite;
+            border-radius: 3px;
+        }
+
+        @keyframes confetti-fall {
+            0% { 
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .fade-in {
+            animation: fadeIn 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9) translateY(30px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .achievement-badge {
+            background: rgba(0, 123, 255, 0.15);
+            border: 2px solid rgba(0, 123, 255, 0.3);
+            border-radius: 30px;
+            padding: 20px 40px;
+            margin: 40px 0;
+            display: inline-block;
+            font-weight: 700;
+            font-size: 1.2rem;
+            animation: badgePulse 3s ease-in-out infinite;
+            letter-spacing: 1px;
+            backdrop-filter: blur(20px);
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { 
+                transform: scale(1); 
+                box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4);
+            }
+            50% { 
+                transform: scale(1.05); 
+                box-shadow: 0 0 0 30px rgba(0, 123, 255, 0);
+            }
+        }
+
+        .brand-logo {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            opacity: 0.8;
+            letter-spacing: 2px;
+        }
+
+        .version-info {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            opacity: 0.6;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .page-title { font-size: 4rem; letter-spacing: -2px; }
+            .final-title { font-size: 4.5rem; letter-spacing: 2px; }
+            .features-grid { grid-template-columns: 1fr; gap: 30px; }
+            .stats-container { gap: 20px; }
+            .content { padding: 40px 20px; }
+            .click-counter { top: 20px; right: 20px; padding: 15px 20px; }
+            .brand-logo { top: 20px; left: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="page1" class="page page1">
+        <div class="brand-logo">ClickFlow</div>
+        <div class="floating-elements">
+            <div class="floating-element emoji-float" style="top: 10%; left: 10%; animation-delay: 0s;">⚡</div>
+            <div class="floating-element emoji-float" style="top: 20%; right: 15%; animation-delay: 3s;">🎯</div>
+            <div class="floating-element emoji-float" style="bottom: 20%; left: 20%; animation-delay: 6s;">🚀</div>
+            <div class="floating-element emoji-float" style="bottom: 30%; right: 25%; animation-delay: 9s;">💎</div>
+        </div>
+        <div class="progress-bar" id="progress1"></div>
+        <div class="click-counter">Clicks: <span id="counter">0</span></div>
+        
+        <div class="content">
+            <h1 class="page-title">Speed Challenge</h1>
+            <p class="page-subtitle">Interactive Reaction Test</p>
+            <p class="page-description">Test your reflexes in this high-intensity clicking challenge. Maintain your speed or face elimination. How long can you keep up the pace?</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">⚡</span>
+                    <div class="feature-title">Lightning Fast</div>
+                    <div class="feature-desc">Advanced real-time response tracking with millisecond precision</div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🎯</span>
+                    <div class="feature-title">Precision Timing</div>
+                    <div class="feature-desc">Intelligent timeout detection keeps you on your toes</div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📊</span>
+                    <div class="feature-title">Performance Analytics</div>
+                    <div class="feature-desc">Detailed metrics track your clicking performance</div>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-item">
+                    <span class="stat-emoji">⏱️</span>
+                    <div class="stat-text">Session Time<br><span id="timeWasted">0</span>s</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-emoji">🎮</span>
+                    <div class="stat-text">Status<br>Ready</div>
+                </div>
+            </div>
+            
+            <div class="click-hint">Begin Challenge</div>
+        </div>
+        <div class="version-info">v2.0 - Professional Edition</div>
+    </div>
+
+    <div id="page2" class="page page2 hidden">
+        <div class="brand-logo">ClickFlow</div>
+        <div class="floating-elements">
+            <div class="floating-element emoji-float" style="top: 15%; left: 20%; animation-delay: 1s;">🔥</div>
+            <div class="floating-element emoji-float" style="top: 25%; right: 10%; animation-delay: 4s;">💫</div>
+            <div class="floating-element emoji-float" style="bottom: 15%; left: 15%; animation-delay: 7s;">⭐</div>
+            <div class="floating-element emoji-float" style="bottom: 25%; right: 30%; animation-delay: 10s;">🌟</div>
+        </div>
+        <div class="progress-bar" id="progress2"></div>
+        <div class="click-counter">Clicks: <span id="counter2">0</span></div>
+        
+        <div class="content">
+            <h1 class="page-title">Performance Mode</h1>
+            <p class="page-subtitle">Maintain Your Momentum</p>
+            <p class="page-description">Excellent work! You're in the flow state. Keep your clicking rhythm consistent. The moment you hesitate for 500ms, the challenge ends.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🔥</span>
+                    <div class="feature-title">Flow State Active</div>
+                    <div class="feature-desc">You've entered the optimal performance zone</div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">⚡</span>
+                    <div class="feature-title">Speed Tracking</div>
+                    <div class="feature-desc">Real-time monitoring of your reaction times</div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🎯</span>
+                    <div class="feature-title">Precision Challenge</div>
+                    <div class="feature-desc">Maintain sub-500ms response intervals</div>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-item">
+                    <span class="stat-emoji">👆</span>
+                    <div class="stat-text">Total Clicks<br><span id="clicksSoFar">0</span></div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-emoji">🎭</span>
+                    <div class="stat-text">Performance<br>Optimal</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-emoji">⏰</span>
+                    <div class="stat-text">Idle Time<br><span id="idleTimer">0.0</span>s</div>
+                </div>
+            </div>
+            
+            <div class="click-hint">Maintain Speed - Don't Stop!</div>
+        </div>
+        <div class="version-info">Performance Monitoring Active</div>
+    </div>
+
+    <div id="finalPage" class="page final-page hidden">
+        <div class="brand-logo">ClickFlow</div>
+        <div class="floating-elements" id="confetti-container"></div>
+        <div class="content fade-in">
+            <div class="achievement-badge">🏆 Challenge Complete</div>
+            <h1 class="final-title">CLICK MASTER</h1>
+            <p class="final-subtitle">Performance Analysis Complete</p>
+            
+            <p class="page-description">Outstanding performance! You achieved <strong><span id="finalClickCount">0</span> clicks</strong> before reaching the timeout threshold. Your reaction speed and consistency demonstrate excellent motor control.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🏅</span>
+                    <div class="feature-title">Achievement Unlocked</div>
+                    <div class="feature-desc">Master-level clicking performance certified</div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📈</span>
+                    <div class="feature-title">Peak Performance</div>
+                    <div class="feature-desc">Maintained optimal response times throughout</div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">⚡</span>
+                    <div class="feature-title">Speed Certified</div>
+                    <div class="feature-desc">Exceptional reaction time consistency</div>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-item">
+                    <span class="stat-emoji">👆</span>
+                    <div class="stat-text">Total Clicks<br><span id="finalClicks">0</span></div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-emoji">⏱️</span>
+                    <div class="stat-text">Session Time<br><span id="totalTime">0</span>s</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-emoji">🎯</span>
+                    <div class="stat-text">Accuracy<br>100%</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-emoji">🌟</span>
+                    <div class="stat-text">Rating<br>Excellent</div>
+                </div>
+            </div>
+            
+            <p class="click-hint">Thank you for testing ClickFlow!</p>
+        </div>
+        <div class="version-info">Session Complete - Data Logged</div>
+    </div>
+
+    <script>
+        let clickCount = 0;
+        let currentPage = 1;
+        let startTime = Date.now();
+        let lastClickTime = Date.now();
+        let idleCheckInterval;
+        let idleStartTime = null;
+        
+        const page1 = document.getElementById('page1');
+        const page2 = document.getElementById('page2');
+        const finalPage = document.getElementById('finalPage');
+        const counter = document.getElementById('counter');
+        const counter2 = document.getElementById('counter2');
+        const progress1 = document.getElementById('progress1');
+        const progress2 = document.getElementById('progress2');
+        const timeWasted = document.getElementById('timeWasted');
+        const clicksSoFar = document.getElementById('clicksSoFar');
+        const totalTime = document.getElementById('totalTime');
+        const idleTimer = document.getElementById('idleTimer');
+        const finalClicks = document.getElementById('finalClicks');
+        const finalClickCount = document.getElementById('finalClickCount');
+
+        function updateCounters() {
+            counter.textContent = clickCount;
+            counter2.textContent = clickCount;
+            if (clicksSoFar) clicksSoFar.textContent = clickCount;
+            
+            // Update progress bars based on idle time (visual feedback)
+            const timeSinceLastClick = Date.now() - lastClickTime;
+            const progressPercent = Math.max(0, 100 - (timeSinceLastClick / 500) * 100);
+            progress1.style.width = progressPercent + '%';
+            progress2.style.width = progressPercent + '%';
+        }
+
+        function updateTimer() {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            if (timeWasted) timeWasted.textContent = elapsed;
+        }
+
+        function updateIdleTimer() {
+            if (idleStartTime) {
+                const idleTime = (Date.now() - idleStartTime) / 1000;
+                if (idleTimer) idleTimer.textContent = idleTime.toFixed(1);
+            }
+        }
+
+        function checkIdleTime() {
+            // Don't check idle time if no clicks have been made yet
+            if (clickCount === 0) {
+                return;
+            }
+            
+            const timeSinceLastClick = Date.now() - lastClickTime;
+            
+            if (timeSinceLastClick >= 500) {
+                // User has been idle for 500ms, end the game
+                switchToFinalPage();
+                return;
+            }
+            
+            // Update idle timer display
+            if (!idleStartTime && timeSinceLastClick > 100) {
+                idleStartTime = Date.now() - timeSinceLastClick;
+            }
+            
+            if (idleStartTime) {
+                updateIdleTimer();
+            }
+        }
+
+        function createConfetti() {
+            const confettiContainer = document.getElementById('confetti-container');
+            const colors = ['#007bff', '#00aaff', '#ffffff', '#e9ecef', '#adb5bd'];
+            
+            for (let i = 0; i < 60; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 4 + 's';
+                confetti.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                confettiContainer.appendChild(confetti);
+            }
+        }
+
+        function switchToFinalPage() {
+            // Clear the idle check interval
+            if (idleCheckInterval) {
+                clearInterval(idleCheckInterval);
+            }
+            
+            page1.classList.add('hidden');
+            page2.classList.add('hidden');
+            finalPage.classList.remove('hidden');
+            
+            const timeSpent = Math.floor((Date.now() - startTime) / 1000);
+            if (totalTime) totalTime.textContent = timeSpent;
+            if (finalClicks) finalClicks.textContent = clickCount;
+            if (finalClickCount) finalClickCount.textContent = clickCount;
+            
+            createConfetti();
+        }
+
+        function switchPage() {
+            clickCount++;
+            lastClickTime = Date.now();
+            idleStartTime = null; // Reset idle timer
+            updateCounters();
+
+            if (currentPage === 1) {
+                page1.classList.add('hidden');
+                page2.classList.remove('hidden');
+                currentPage = 2;
+            } else {
+                page2.classList.add('hidden');
+                page1.classList.remove('hidden');
+                currentPage = 1;
+            }
+        }
+
+        // Add click listeners to all pages
+        page1.addEventListener('click', switchPage);
+        page2.addEventListener('click', switchPage);
+
+        // Prevent final page from being clickable for switching
+        finalPage.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        // Initialize counters and start timers
+        updateCounters();
+        setInterval(updateTimer, 1000);
+        
+        // Start idle checking
+        idleCheckInterval = setInterval(checkIdleTime, 50); // Check every 50ms for smooth progress bar
+    </script>
+</body>
+</html>
 
 # Run
 [commands]
