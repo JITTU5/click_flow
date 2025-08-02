@@ -1,39 +1,33 @@
 <img width="3188" height="1202" alt="frame (3)" src="https://github.com/user-attachments/assets/517ad8e9-ad22-457d-9538-a9e62d137cd7" />
 
 
-# [Project Name] 🎯
+# click flow🎯
 
 
-## Basic Details
+## click challenge
 ### Team Name: [Name]
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Team Lead: [Jittu] - [Mar Basalios Christian College of Engineering and Technology, Kuttikanam]
 
 ### Project Description
-[2-3 lines about what your project does]
+It does a page loop using 2 pages, and counts the number of clicks and stops when it gets a delay
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+No problem in the world needs this solution, but maybe for improving the speed of fingers 
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+I created a fast-clicking challenge.
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
+- html,css, js
+- VS Code
 
 For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
+- nil
 
 ### Implementation
 For Software:
@@ -47,14 +41,13 @@ For Software:
 For Software:
 
 # Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+(https://drive.google.com/file/d/1JOAthqSB8kxxg4cwZ5_Rsq76C9rnF43J/view?usp=drive_link)
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot2]
+https://drive.google.com/file/d/1-I5eOXFT7WkrS3_IvwHE46rA7v9Tr6bi/view?usp=drive_link
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot3]
+https://drive.google.com/file/d/1kQCz2OIWB2EryNeMBlUYO-GcgDGC1NSo/view?usp=drive_link
 
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
@@ -81,7 +74,7 @@ For Hardware:
 
 ### Project Demo
 # Video
-[Add your demo video link here]
+https://drive.google.com/file/d/1k0q8crCDzEl9b_2LaL0wRhCU0b8MMWir/view?usp=drive_link
 *Explain what the video demonstrates*
 
 # Additional Demos
